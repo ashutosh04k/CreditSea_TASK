@@ -1,0 +1,36 @@
+services:
+  # ---------------------------------------------
+  # Backend API Web Service
+  # ---------------------------------------------
+  - type: web
+    name: credflow-backend
+    env: node
+    rootDir: backend
+    plan: free
+    buildCommand: npm install && npm run build
+    startCommand: npm run start
+    envVars:
+      - key: PORT
+        value: 5001
+      - key: JWT_SECRET
+        generateValue: true
+      - key: MONGODB_URI
+        sync: false # Set your MongoDB Atlas connection string in the Render Dashboard
+
+  # ---------------------------------------------
+  # Frontend Next.js Web Service
+  # ---------------------------------------------
+  - type: web
+    name: credflow-frontend
+    env: node
+    rootDir: frontend
+    plan: free
+    buildCommand: npm install && npm run build
+    startCommand: npm run start
+    envVars:
+      - key: NEXT_PUBLIC_API_URL
+        fromService:
+          type: web
+          name: credflow-backend
+          property: host
+        value: https://${credflow-backend.host}/api
