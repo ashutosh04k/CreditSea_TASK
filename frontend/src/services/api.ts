@@ -8,6 +8,18 @@ const getBaseUrl = () => {
 
 const API_BASE_URL = getBaseUrl();
 
+export const getFileUrl = (relativeUrl?: string): string => {
+  if (!relativeUrl) return '';
+  if (relativeUrl.startsWith('http://') || relativeUrl.startsWith('https://')) {
+    return relativeUrl;
+  }
+  const backendBase = (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001/api')
+    .trim()
+    .replace(/\/+$/, '')
+    .replace(/\/api$/, '');
+  return `${backendBase}${relativeUrl.startsWith('/') ? '' : '/'}${relativeUrl}`;
+};
+
 export const api = axios.create({
   baseURL: API_BASE_URL,
   headers: {

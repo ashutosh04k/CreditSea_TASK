@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '../../context/AuthContext';
-import { apiService } from '../../services/api';
+import { apiService, getFileUrl } from '../../services/api';
 import { Loan, User, UserRole, Payment } from '../../types';
 import {
   ShieldAlert,
@@ -405,7 +405,7 @@ export default function DashboardPage() {
                     <td className="p-3.5">
                       {loan.salarySlipUrl ? (
                         <a
-                          href={`http://localhost:5001${loan.salarySlipUrl}`}
+                          href={getFileUrl(loan.salarySlipUrl)}
                           target="_blank"
                           rel="noreferrer"
                           className="text-[#234FE6] hover:underline flex items-center gap-1 font-bold"
